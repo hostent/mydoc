@@ -1,0 +1,254 @@
+ 
+cd /www/x
+find -name "*.out" -exec rm -f '{}' \;
+cp -rf  /www/API/* ./
+cd ..
+./stop.sh
+jps
+./start.sh
+
+
+
+ 
+ service docker restart
+ docker start mysql01
+ 
+ 
+
+----------------------------------------------------
+
+redis:
+cd /www/software/redis/bin
+./redis-server /tools/redis-6.0.3/6397.conf&
+
+./redis-server /usr/local/bin/redis.conf&
+
+
+mongodb:
+cd /www/software/mongodb/bin
+sudo ./mongod -f ./mongod.conf --wiredTigerCacheSizeGB 5 --auth
+
+sudo ./mongod -f ./mongod.conf --wiredTigerCacheSizeGB 1.5 --auth
+
+kafka:
+cd /www/software/kafka
+./bin/kafka-server-start.sh config/server.properties &1 &
+或者
+./bin/kafka-server-start.sh config/server.properties &
+等到加载完成，不要摁ctrl+C，输入exit即可
+
+nginx
+
+nginx -c /www/software/nginx/conf/nginx.conf 
+
+kill 26382
+./nginx -c /usr/local/nginx/conf/nginx.conf 
+
+---
+cd /www/software/zookeeper/bin
+./zkServer.sh start
+
+cd /usr/local/nginx/sbin
+sudo ./nginx
+
+
+ss -tlnp | grep 9932
+
+查看jdk 版本
+
+export JAVA_HOME=/opt/tools/jdk1.8.0_201
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib:$CLASSPATH
+export JAVA_PATH=${JAVA_HOME}/bin:${JRE_HOME}/bin
+export PATH=$PATH:${JAVA_PATH}
+ 
+ 
+ source /etc/profile
+
+修改Linux时区,date -R
+sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+sudo unlink /etc/localtime 
+sudo ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+
+firewall-cmd --zone=public --add-port=7001/tcp --permanent
+
+----------------------------
+
+docker run -itd --name demo-test1 demo:v1
+
+nohup java -Xms256m -Xmx256m -jar -Dloader.path=lib -Dspring.config.location=micro/account/ micro/account/account-0.0.1.jar >>micro/account/account.out &
+
+
+docker ps -a | grep "Exited" | awk '{print $1 }'|xargs docker stop
+
+
+容器交互，进入该镜像的目录结构命令：docker exec -it 该镜像id /bin/bash
+
+docker exec -it cb96d54adce2 /bin/bash
+
+查看运行状态
+# systemctl status firewalld
+停止防火墙
+# systemctl stop firewalld
+启动防火墙
+# systemctl start firewalld
+设置为开机启动与开机不启动
+启动
+# systemctl enable firewalld
+开机不启动
+# systemctl disable firewalld
+firewall-cmd --zone=public --list-ports
+
+firewall-cmd --add-port=27017/tcp --permanent
+firewall-cmd --add-port=6379/tcp --permanent
+firewall-cmd --add-port=8092/tcp --permanent
+firewall-cmd --add-port=8088/tcp --permanent
+firewall-cmd --add-port=9876/tcp --permanent
+firewall-cmd --add-port=8093/tcp --permanent
+firewall-cmd --add-port=5222/tcp --permanent
+firewall-cmd --add-port=7002/tcp --permanent
+firewall-cmd --add-port=80/tcp --permanent
+firewall-cmd --add-port=8089/tcp --permanent
+firewall-cmd --add-port=5290/tcp --permanent
+firewall-cmd --add-port=8095/tcp --permanent
+firewall-cmd --add-port=81/tcp --permanent
+firewall-cmd --add-port=8848/tcp --permanent
+firewall-cmd --reload
+
+27017/tcp 6379/tcp 8092/tcp 8088/tcp 9876/tcp 8093/tcp 5222/tcp 7002/tcp 80/tcp 8089/tcp 5290/tcp 8095/tcp 81/tcp 9080/tcp
+---------------------------docker jira
+
+docker run -d --name cpmcjira --restart always  -p 18080:8080  -e TZ="Asia/Shanghai"  -m 4096M  -v /jira/data:/var/atlassian/jira  dchevell/jira-software:7.13.0
+
+
+
+docker cp mysql-connector-java-5.1.49.jar jira:/opt/atlassian/jira/atlassian-jira/WEB-INF/lib/
+
+
+docker cp /jira/atlassian-extras-3.2.jar cpmcjira:/opt/atlassian/jira/atlassian-jira/WEB-INF/lib/
+
+
+docker exec -it cpmcjira bash
+
+docker restart cpmcjira
+
+docker stop cpmcjira
+ 
+
+chmod 755 /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/mysql-connector-java-5.1.49.jar
+
+
+docker run -d -it -p  9080:9080  --privileged  -m 4096M -v /data/jira-data:/var/atlassian/application-data/jira  -v /etc/localtime:/etc/localtime --name jira dchevell/jira-software:7.13.0
+
+
+docker run -d --name cpmcjira --restart always  -p 18080:8080  -e TZ="Asia/Shanghai"  -m 4096M  -v /data3/atlassian/jiradata:/var/atlassian/jira  registry.cn-hangzhou.aliyuncs.com/yangmingquan/jira:8.1.0
+
+docker run -d --name cpmcjira --restart always  -p 18080:8080  -e TZ="Asia/Shanghai"  -m 4096M  -v /data3/atlassian/jiradata:/var/atlassian/jira  registry.cn-hangzhou.aliyuncs.com/yangmingquan/jira:8.1.0
+
+
+java -jar atlassian-agent.jar -d -m test@test.com -n BAT -p jira -o http://192.168.160.195/ -s BLIR-C8X3-4OSU-Y91T 页面上看到的服务器ID
+
+
+------svn-------
+set NODE_OPTIONS=--openssl-legacy-provider
+
+npm install
+npm run dev
+
+svnadmin create Oms
+
+svnserve -d -r /svncode
+
+-------elasticsearch-------
+
+chown -R jbh /tools/es/elasticsearch-7.17.1
+
+chown -R jbh /tools/jdk1.8.0_201
+
+ 
+
+./elasticsearch
+
+chown -R lkl:lkl /tools/es/elasticsearch-7.17.1
+
+./bin/elasticsearch -d -p pid
+
+wget https://github.com/360EntSecGroup-Skylar/ElasticHD/releases/download/1.4/elasticHD_linux_amd64.zip
+exec ./ElasticHD -p 0.0.0.0:9800 &
+
+wget https://artifacts.elastic.co/downloads/kibana/kibana-7.14.0-linux-x86_64.tar.gz
+nohup ./bin/kibana --allow-root &
+
+
+
+vm.max_map_count [65530] is too low
+#修改文件
+sudo vim /etc/sysctl.conf
+ 
+#添加参数
+vm.max_map_count = 610000
+重新加载/etc/sysctl.conf配置
+
+sysctl -p
+
+vi /etc/security/limits.conf
+es soft nofile 65536
+es hard nofile 131072
+es soft nproc 65536
+es hard nproc 65536
+
+重启服务器或重新登录即可生效
+ulimit -Hn
+
+es 设置账户
+./elasticsearch-setup-passwords interactive
+es修改密码
+curl -H "Content-Type:application/json" -XPOST -u elastic 'http://192.168.140:9200/_xpack/security/user/elastic/_password' -d '{ "password" : "123456" }'
+
+Enter password for [elastic]: 
+Reenter password for [elastic]: 
+Enter password for [apm_system]: 
+Reenter password for [apm_system]: 
+Enter password for [kibana_system]: 
+Reenter password for [kibana_system]: 
+Enter password for [logstash_system]: 
+Reenter password for [logstash_system]: 
+Enter password for [beats_system]: 
+Reenter password for [beats_system]: 
+123456
+
+
+
+--------------------redis 安装
+# 1. 安装gcc套装（如果是新系统，gcc通常安装不全面）
+yum install cpp
+yum install binutils
+yum install glibc
+yum install glibc-kernheaders
+yum install glibc-common
+yum install glibc-devel
+yum install gcc
+yum install make
+# 2. 升级gcc
+yum -y install centos-release-scl
+yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+scl enable devtoolset-9 bash
+3
+make PREFIX=/usr/local/redis install
+cd /usr/local/redis/bin
+./redis-server /usr/local/redis/bin/redis.conf&
+
+-----------------------------nginx 安装
+//一键安装上面四个依赖
+yum -y install gcc zlib zlib-devel pcre-devel openssl openssl-devel
+./configure --with-http_stub_status_module --with-http_ssl_module
+make
+make install
+cd  /usr/local/nginx
+
+
+
+
+
+ 
