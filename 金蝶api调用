@@ -1,0 +1,33 @@
+
+http://xxxx/Kingdee.BOS.WebApi.ServicesStub.AuthService.ValidateUser.common.kdsvc
+
+                        Kingdee.BOS.WebApi.ServicesStub.AuthService.ValidateUser.common.kdsvc
+
+
+http://xxxxx/K3Cloud/Kingdee.BOS.WebApi.ServicesStub.AuthService.ValidateUser.common.kdsvc
+
+
+
+acctID,62cd0d369bc610
+username,xxxx
+password,xxxxx
+lcid,2052
+
+{"acctID":"62cd0d369bc610","username":"xxxx","password":"xxxx","lcid":"2052"}
+
+
+ 
+
+JSONObject jObj = new JSONObject();                
+jObj.put("format", 1);                
+jObj.put("useragent", "ApiClient");                
+jObj.put("rid", hashCode);                
+jObj.put("parameters", chinaToUnicode(paras.toString()));               
+jObj.put("timestamp", new Date().toString());                
+jObj.put("v", "1.0");
+
+
+"v":"1.0","format":1,"useragent":"ApiClient","rid":"165779118277918780","parameters":"[\"62cd0d369bc610\",\"Administrator\",\"xxxx\",\"2052\"]","timestamp":"Thu Jul 14 17:33:03 CST 2022"
+
+{"v":"1.0","format":1,"useragent":"ApiClient","rid":167239002,"parameters":"[\"62cd0d369bc610\",\"Administrator\",\"xxxx\",2052]","timestamp":"Fri Jul 15 08:45:21 CST 2022"}
+{"v":"1.0","format":1,"useragent":"ApiClient","rid":164397814,"parameters":"[\"62cd0d369bc610\",\"Administrator\",\"xxxx\",2052]","timestamp":"Fri Jul 15 08:42:42 CST 2022"}
