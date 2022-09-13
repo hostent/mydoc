@@ -1,0 +1,58 @@
+
+------------------------------------------
+拉取镜像仓库镜像
+docker pull registry
+启动镜像仓库
+docker run -d -p 5000:5000 --restart=always --name registry registry
+标记镜像
+docker tag demo:v1 127.0.0.1:5000/demo:v1
+上传标记的镜像
+docker push 127.0.0.1:5000/demo:v1
+用 curl查看仓库中的镜像
+curl 127.0.0.1:5000/v2/_catalog
+docker pull 127.0.0.1:5000/demo:v1
+---------------------------------------------
+拉取镜像仓库镜像
+docker pull registry
+启动镜像仓库
+docker run -d -p 5000:5000 --restart=always --name registry registry
+标记镜像
+docker tag openjdk:8-jdk-alpine 192.168.160.195:5000/openjdk:8-jdk-alpine
+上传标记的镜像
+docker push 192.168.160.195:5000/openjdk:8-jdk-alpine
+用 curl查看仓库中的镜像
+curl 127.0.0.1:5000/v2/_catalog
+docker pull 192.168.160.195:5000/openjdk:8-jdk-alpine
+
+---- docker 重启
+systemctl restart docker
+docker start mysql01
+修改本地/etc/docker/daemon.json  //上传到远程失败问题
+加速配置  
+{ 
+"insecure-registries":["192.168.160.195:5000"] 
+}
+
+docker build -t jbh-api:v1 .
+
+docker run -itd  -p 8001:8001 --privileged=true --name jbh-api jbh-api:v1
+docker exec -it jbh-api sh
+
+docker exec -it --user=root jbh-api /bin/bash
+docker exec -it --user=root f939f8e98c5b /bin/sh
+docker attach f7b46ed67739
+docker run -i -t -v /usr/local/work/:/mnt/software/ f7b46ed67739 /bin/bash
+
+sudo /bin/sh -c ./run.sh
+docker logs  -f jbh-api
+
+dockerfile 执行sh，前面几条用nohup+& ，最后一条命令 的& ，要去掉，不然sh过了，容器就退出了。
+
+-----------------------
+docker stop jbh-api
+docker rm -f jbh-api
+docker rmi jbh-api:v1
+docker build -t jbh-api:v1 .
+docker run -itd  -p 8001:8001 --privileged=true --name jbh-api jbh-api:v1
+
+---------------
